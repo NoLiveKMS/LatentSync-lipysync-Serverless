@@ -158,3 +158,8 @@ All models are **preloaded at build time**, ensuring fully offline runtime execu
 
 Special thanks and sincere appreciation to the ByteDance LatentSync team for their outstanding work on this model.
 This deployment builds upon their research and engineering excellence, and we acknowledge their contribution with deep respect and gratitude.
+
+### Run on local
+```bash
+sudo docker run --rm -it   --runtime=nvidia   --gpus all   -e NVIDIA_VISIBLE_DEVICES=all   -e NVIDIA_DRIVER_CAPABILITIES=video,compute,utility   lat_t_1
+```

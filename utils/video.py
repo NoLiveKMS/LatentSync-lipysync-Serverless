@@ -39,7 +39,7 @@ def load_pipe():
 
     if PIPE is not None:
         return PIPE
-
+    print("Loading LatentSync pipeline...")
     # ---- Load config (CORRECT PATH) ----
     if not CONFIG_PATH.exists():
         raise FileNotFoundError(f"LatentSync config not found: {CONFIG_PATH}")
@@ -66,7 +66,7 @@ def load_pipe():
         model_path=str(whisper_path),
         device=DEVICE,
         num_frames=CONFIG.data.num_frames,
-        audio_feat_length=CONFIG.data.audio_feat_length,
+        audio_feat_length=CONFIG.data.audio_feat_length, # Extra
     )
 
     # ---- VAE ----
