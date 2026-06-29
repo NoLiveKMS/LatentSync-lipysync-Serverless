@@ -21,6 +21,6 @@
     }
   ],
   "config": {
-    "gpuTypeId": "NVIDIA GeForce RTX 3090"
+    "gpuTypeId": "NVIDIA GeForce RTX 4090"
   }
 }
