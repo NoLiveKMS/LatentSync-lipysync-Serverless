@@ -154,7 +154,7 @@ def handler(event):
                         str(upload_target),
                         s3_key
                     )
-                    s3_output = upload_future.result()
+                    s3_output = upload_future.result(timeout=300)  # 5 min max
 
                 meta_outputs.append({
                     "audio_path": audio_path,

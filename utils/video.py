@@ -25,7 +25,7 @@ LATENTSYNC_DIR = BASE_DIR / "LatentSync"
 CONFIG_PATH = LATENTSYNC_DIR / "configs" / "unet" / "stage2_512.yaml"
 SCHEDULER_DIR = LATENTSYNC_DIR / "configs"
 UNET_CKPT = BASE_DIR / "checkpoints" / "latentsync_unet.pt"
-WHISPER_TINY = BASE_DIR / "checkpoints" / "whisper" / "whisper" / "tiny.pt"
+WHISPER_TINY = BASE_DIR / "checkpoints" / "whisper" / "tiny.pt"
 WHISPER_SMALL = BASE_DIR / "checkpoints" / "whisper" / "small.pt"
 MASK_PATH = LATENTSYNC_DIR / "latentsync" / "utils" / "mask.png"
 

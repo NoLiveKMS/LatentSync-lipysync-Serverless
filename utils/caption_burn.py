@@ -5,7 +5,6 @@ import json
 
 def _nvenc_usable():
     try:
-        return False
         out = subprocess.check_output(
             ["nvidia-smi", "-q"],
             stderr=subprocess.DEVNULL

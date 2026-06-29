@@ -1,6 +1,6 @@
 {
   "title": "Latentsync lipsync",
-  "description": "Latentsync lipsync with request-level routing between staging and production S3 buckets",
+  "description": "Latentsync lipsync with request-level routing between staging and production S3 buckets for input; outputs uploaded to Backblaze B2",
   "type": "serverless",
   "category": "video",
 
@@ -30,7 +30,7 @@
         "input": {
           "name": "Staging S3 Bucket",
           "type": "string",
-          "description": "S3 bucket for staging outputs"
+          "description": "S3 bucket for staging inputs"
         }
       },
 
@@ -55,13 +55,56 @@
         "input": {
           "name": "Production S3 Bucket",
           "type": "string",
-          "description": "S3 bucket for production outputs"
+          "description": "S3 bucket for production inputs"
         }
       },
 
       {
         "key": "AWS_REGION",
         "value": "us-east-2"
+      },
+
+      {
+        "key": "R2_ACCESS_KEY",
+        "input": {
+          "name": "Backblaze B2 Access Key",
+          "type": "string",
+          "secret": true,
+          "description": "Backblaze B2 application key ID"
+        }
+      },
+      {
+        "key": "R2_SECRET_KEY",
+        "input": {
+          "name": "Backblaze B2 Secret Key",
+          "type": "string",
+          "secret": true,
+          "description": "Backblaze B2 application key"
+        }
+      },
+      {
+        "key": "R2_BUCKET",
+        "input": {
+          "name": "Backblaze B2 Bucket Name",
+          "type": "string",
+          "description": "Bucket name for output video upload (e.g. RunPodmyfile)"
+        }
+      },
+      {
+        "key": "R2_ENDPOINT",
+        "input": {
+          "name": "Backblaze B2 S3 Endpoint",
+          "type": "string",
+          "description": "e.g. https://s3.us-east-005.backblazeb2.com"
+        }
+      },
+      {
+        "key": "R2_PUBLIC_BASE",
+        "input": {
+          "name": "Backblaze B2 Public Base URL",
+          "type": "string",
+          "description": "e.g. https://f005.backblazeb2.com/file/RunPodmyfile"
+        }
       }
     ]
   }

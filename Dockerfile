@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     libgl1 \
     ca-certificates \
+    wget \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Make python3.10 default
@@ -24,7 +26,6 @@ WORKDIR /app
 # Python tooling
 RUN python3 -m pip install --upgrade pip setuptools wheel
 
-
 RUN pip install \
     torch==2.5.1 \
     torchvision==0.20.1 \
@@ -32,46 +33,39 @@ RUN pip install \
 
 # Install Python deps
 COPY requirements.txt .
-
 RUN pip install -r requirements.txt
 
-# HuggingFace CLI
-RUN pip install huggingface-hub
-RUN pip install tensorflow-cpu
+# HuggingFace CLI + tensorflow (needed by mediapipe)
+RUN pip install huggingface-hub tensorflow-cpu
 
 # Copy application code
 COPY . .
-#
-## clone latentsync
-#RUN git clone https://github.com/bytedance/LatentSync.git
-#
-#RUN apt-get update && apt-get install -y wget unzip
-#
-#RUN mkdir -p checkpoints/auxiliary/models/buffalo_l && \
-#    wget -O checkpoints/auxiliary/models/buffalo_l.zip \
-#      https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip && \
-#    unzip checkpoints/auxiliary/models/buffalo_l.zip -d checkpoints/auxiliary/models/buffalo_l && \
-#    rm checkpoints/auxiliary/models/buffalo_l.zip
-#
-#
-#WORKDIR /app/LatentSync
-#
-## Pre-download checkpoints
-#RUN mkdir -p /app/LatentSync/checkpoints/whisper
-#
-#RUN huggingface-cli download ByteDance/LatentSync-1.6 \
-#    latentsync_unet.pt \
-#    --local-dir /app/checkpoints \
-#    --local-dir-use-symlinks False
-#
-#RUN huggingface-cli download ByteDance/LatentSync-1.6 \
-#    whisper/tiny.pt \
-#    --local-dir /app/checkpoints/whisper \
-#    --local-dir-use-symlinks False
-#
-## Pre-download VAE
-#WORKDIR /app
 
+# Clone LatentSync
+RUN git clone https://github.com/bytedance/LatentSync.git /app/LatentSync
+
+# Download InsightFace buffalo_l face model
+RUN mkdir -p /app/checkpoints/auxiliary/models/buffalo_l && \
+    wget -O /tmp/buffalo_l.zip \
+      https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip && \
+    unzip /tmp/buffalo_l.zip -d /app/checkpoints/auxiliary/models/buffalo_l && \
+    rm /tmp/buffalo_l.zip
+
+# Download LatentSync UNet checkpoint
+# → saves to /app/checkpoints/latentsync_unet.pt
+RUN huggingface-cli download ByteDance/LatentSync-1.6 \
+    latentsync_unet.pt \
+    --local-dir /app/checkpoints \
+    --local-dir-use-symlinks False
+
+# Download Whisper tiny model
+# → saves to /app/checkpoints/whisper/tiny.pt  (matches video.py WHISPER_TINY path)
+RUN huggingface-cli download ByteDance/LatentSync-1.6 \
+    whisper/tiny.pt \
+    --local-dir /app/checkpoints \
+    --local-dir-use-symlinks False
+
+# Pre-download VAE (stabilityai/sd-vae-ft-mse → ~/.cache/huggingface)
 RUN python3 pre_model.py
 
 ENV PYTHONPATH="/app/LatentSync:${PYTHONPATH}"
