@@ -1,14 +1,26 @@
 {
   "tests": [
     {
-      "name": "info_mode_test",
+      "name": "basic_health_check",
       "input": {
-        "aleef": true
+        "inp_meta": [
+          {
+            "ref_video_path": "https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4",
+            "cc": false,
+            "ref_audio_meta": [
+              {
+                "audio_path": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                "srt_path": null
+              }
+            ]
+          }
+        ],
+        "level": "stag"
       },
-      "timeout": 20000
+      "timeout": 300000
     }
   ],
   "config": {
-    "gpuTypeId": "NONE"
+    "gpuTypeId": "NVIDIA GeForce RTX 3090"
   }
 }
